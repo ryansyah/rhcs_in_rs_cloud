@@ -1,0 +1,125 @@
+#!/usr/bin/python
+
+import sys
+
+sys.path.append("/usr/share/fence")
+from fencing import *
+
+
+import pyrax
+
+
+def get_power_status(conn, options):
+
+    # Authenticate against the api
+    pyrax.set_credentials(options['-u'], options['-p'],
+                          region=options['-a'])
+
+    # Instantiate a cloudservers object
+    csobj = pyrax.cloudservers
+
+    # Get the node with the matching id
+    curnode = csobj.servers.get(options['-i'])
+
+    # Check and return the status
+    if curnode.status == 'ACTIVE':
+        return 'on'
+    else:
+        return 'off'
+
+
+def set_power_status(conn, options):
+
+    # Authenticate against the api
+    pyrax.set_credentials(options['-u'], options['-p'],
+                          region=options['-a'])
+
+    # Instantiate a cloudservers object
+    csobj = pyrax.cloudservers
+
+    # Get the node with the matching id
+    curnode = csobj.servers.get(options['-i'])
+
+    if options['-o'] == 'on':
+        # Rackspace doesn't have a stop/start.  S
+        # So we reboot on off and pass on start
+        pass
+
+    if options['-o'] == 'off' or options['-o'] == 'reboot':
+        curnode.reboot()
+
+    return 0
+
+
+# Define new option
+def nova_define_new_opts():
+
+    all_opt["username"] = {
+        "getopt": "u:",
+        "longopt": "username",
+        "help": "-u, --username = <username>          Name of \
+        openstack account username",
+        "required": "1",
+        "shortdesc": "Name of openstack username",
+        "order": 1
+    }
+
+    all_opt["apikey"] = {
+        "getopt": "p:",
+        "longopt": "apikey",
+        "help": "-p, --apikey = <apikey>              Name of \
+        openstack api key",
+        "required": "1",
+        "shortdesc": "Name of openstack apikey",
+        "order": 1
+    }
+
+    all_opt["region"] = {
+        "getopt": "a:",
+        "longopt": "region",
+        "help": "-a, --region = <region>              Name of \
+        rackspace region",
+        "required": "1",
+        "shortdesc": "Name of rackspace region id",
+        "order": 1
+    }
+
+    all_opt["instanceid"] = {
+        "getopt": "i:",
+        "longopt": "instanceid",
+        "help": "-i, --instanceid = <instanceid>              Node id",
+        "required": "1",
+        "shortdesc": "ID of the openstack node",
+        "order": 1
+    }
+
+
+def main():
+    device_opt = ["help", "version", "agent", "quiet", "verbose",
+                  "debug", "instanceid", "action", "username",
+                  "apikey", "region", "power_wait", "power_timeout"]
+
+    atexit.register(atexit_handler)
+
+    nova_define_new_opts()
+
+    options = check_input(device_opt, process_input(device_opt))
+
+    docs = {}
+    docs["shortdesc"] = "Fence agent for Nova REST API"
+    docs["longdesc"] = "fence_nova is an I/O Fencing agent which can be \
+    used with OpenStack's REST API to fence cloud instances."
+    docs["vendorurl"] = "http://www.linuxrackers.com"
+    show_docs(options, docs)
+
+    ##
+    ## Fence operations
+    ####
+    result = fence_action(None, options, set_power_status,
+                          get_power_status, None)
+
+    sys.exit(result)
+
+
+if __name__ == "__main__":
+    main()
