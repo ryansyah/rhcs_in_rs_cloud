@@ -353,7 +353,7 @@ def main():
     # Create a DNS entry for the servers
     create_dns(cdnsobj, luci_fqdn, luci_server_updated.accessIPv4)
     create_dns(cdnsobj, ricci1_fqdn, ricci1_server_updated.accessIPv4)
-    create_dns(cdnsobj, ricci2_fqdn, ricci1_server_updated.accessIPv4)
+    create_dns(cdnsobj, ricci2_fqdn, ricci2_server_updated.accessIPv4)
 
     # Print the server data
     print_server_data(luci_server_updated, luci_server.adminPass)
