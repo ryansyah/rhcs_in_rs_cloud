@@ -188,8 +188,8 @@ def main():
         description="Create a 2 node RHCS cluster with a luci/iscsi node",
         prog='create_rhcs_cluster.py')
     parser.add_argument(
-        '--image', help='image id or name (default: CentOS 6.3)',
-        default='CentOS 6.3')
+        '--image', help='image id or name (default: CentOS 6.4)',
+        default='CentOS 6.4')
     parser.add_argument(
         '--flavor',
         help='flavor id or name (default: 512MB Standard Instance)',
