@@ -47,7 +47,7 @@ def set_power_status(conn, options):
         pass
 
     if options['-o'] == 'off' or options['-o'] == 'reboot':
-        curnode.reboot()
+        curnode.reboot(reboot_type="hard")
 
     return 0
 
