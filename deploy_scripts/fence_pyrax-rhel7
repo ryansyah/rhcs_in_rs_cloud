@@ -1,6 +1,7 @@
 #!/usr/bin/python -W ignore
 
 import sys
+import atexit
 
 sys.path.append("/usr/share/fence")
 from fencing import *
