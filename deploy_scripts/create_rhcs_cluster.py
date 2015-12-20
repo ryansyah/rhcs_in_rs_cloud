@@ -379,8 +379,8 @@ def main():
 
     # Print the server data
     print_server_data(ricci1_server_updated, ricci1_server.adminPass)
-    print_server_data(ricci1_server_updated, ricci1_server.adminPass)
-    print_server_data(ricci1_server_updated, ricci1_server.adminPass)
+    print_server_data(ricci2_server_updated, ricci2_server.adminPass)
+    print_server_data(ricci3_server_updated, ricci3_server.adminPass)
     print_server_data(luci_server_updated, luci_server.adminPass)
 
 
