@@ -176,6 +176,8 @@ def create_and_attach_cbs(cbsobj, cbl_label, cbl_size, server):
         print "Creating volume " + cbl_label + " of size " + str(cbl_size)
         newvol = cbsobj.create(name=cbl_label, size=cbl_size)
 
+    # Wait for cbs to become active 
+
     print "Attaching volume to server " + server.name
     newvol.attach_to_instance(server,mountpoint='')
 
