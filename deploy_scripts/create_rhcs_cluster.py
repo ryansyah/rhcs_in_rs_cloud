@@ -309,7 +309,7 @@ def main():
                                   cs_files)
 
     # Create the ricci3 server
-    ricci3_server = create_device(csobj, ricci2_fqdn, flavor_id, image_id,
+    ricci3_server = create_device(csobj, ricci3_fqdn, flavor_id, image_id,
                                       rhcsnet.id, appnet.id, storagenet.id,
                                       cs_files)
 
