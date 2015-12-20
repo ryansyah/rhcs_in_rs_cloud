@@ -188,14 +188,14 @@ def main():
         description="Create a 2 node RHCS cluster with a luci/iscsi node",
         prog='create_rhcs_cluster.py')
     parser.add_argument(
-        '--image', help='image id or name (default: CentOS 6.4)',
-        default='CentOS 6.4')
+        '--image', help='image id or name (default: CentOS 6 (PVHM))',
+        default='CentOS 6 (PVHM)')
     parser.add_argument(
         '--flavor',
         help='flavor id or name (default: 512MB Standard Instance)',
         default='512MB Standard Instance')
     parser.add_argument(
-        '--region', help='Region (default: DFW)', default="DFW")
+        '--region', help='Region (default: ORD)', default="ORD")
     parser.add_argument(
         '--rhcs_network_label',
         help='RHCS network label (default: rhcs00)',
@@ -222,16 +222,16 @@ def main():
         default='192.168.77.0/24')
     parser.add_argument(
         '--nfs_cbl_size',
-        help='NFS service disk size (default: 100)',
-        default=100)
+        help='NFS service disk size (default: 75)',
+        default=75)
     parser.add_argument(
         '--nfs_cbl_label',
         help='NFS service disk label (default: nfs_vol00)',
         default='nfs_vol00')
     parser.add_argument(
         '--mysql_cbl_size',
-        help='Mysql service disk size (default: 100)',
-        default=100)
+        help='Mysql service disk size (default: 75)',
+        default=75)
     parser.add_argument(
         '--mysql_cbl_label',
         help='Mysql service disk label (default: mysql_vol00)',
