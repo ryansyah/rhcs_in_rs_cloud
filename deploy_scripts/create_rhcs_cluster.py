@@ -281,7 +281,7 @@ def main():
     ricci2_fqdn = ricci2_host + "." + args.domain
     check_dns(cdnsobj, ricci2_fqdn)
     ricci3_fqdn = ricci3_host + "." + args.domain
-    check_dns(cdnsobj, ricci3_fdqn)
+    check_dns(cdnsobj, ricci3_fqdn)
     luci_fqdn = luci_host + "." + args.domain
     check_dns(cdnsobj, luci_fqdn)
 
