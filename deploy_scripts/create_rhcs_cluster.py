@@ -185,7 +185,7 @@ def main():
 
     # Parse the command line arguments
     parser = argparse.ArgumentParser(
-        description="Create a 2 node RHCS cluster with a luci/iscsi node",
+        description="Create a 3 node RHCS cluster with a luci/iscsi node",
         prog='create_rhcs_cluster.py')
     parser.add_argument(
         '--image', help='image id or name (default: CentOS 6 (PVHVM))',
@@ -243,9 +243,10 @@ def main():
         required=True)
     args = parser.parse_args()
 
-    luci_host = 'luci00'
     ricci1_host = 'ricci00'
     ricci2_host = 'ricci01'
+    ricci3_host = 'ricci02'
+    luci_host = 'luci00'
 
     # Authenticate using a credentials file: "~/.rackspace_cloud_credentials"
     cred_file = "%s/.rackspace_cloud_credentials" % (os.environ['HOME'])
@@ -275,12 +276,14 @@ def main():
     image_id = get_image_from_id_or_name(csobj, args.image)
 
     # Lets check the domain existance for the fqdn before going on
-    luci_fqdn = luci_host + "." + args.domain
-    check_dns(cdnsobj, luci_fqdn)
     ricci1_fqdn = ricci1_host + "." + args.domain
     check_dns(cdnsobj, ricci1_fqdn)
     ricci2_fqdn = ricci2_host + "." + args.domain
     check_dns(cdnsobj, ricci2_fqdn)
+    ricci3_fqdn = ricci3_host + "." + args.domain
+    check_dns(cdnobj, ricci3_fdqn)
+    luci_fqdn = luci_host + "." + args.domain
+    check_dns(cdnsobj, luci_fqdn)
 
     # Check public key file
     cs_files = check_pub_key_file(args.public_keyfile)
@@ -293,11 +296,6 @@ def main():
     storagenet = create_network(cnetobj, args.storage_network_label,
                                 args.storage_network_subnet)
 
-    # Create the luci server
-    luci_server = create_device(csobj, luci_fqdn, flavor_id, image_id,
-                                rhcsnet.id, appnet.id, storagenet.id,
-                                cs_files)
-
     # Create the ricci1 server
     ricci1_server = create_device(csobj, ricci1_fqdn, flavor_id, image_id,
                                   rhcsnet.id, appnet.id, storagenet.id,
@@ -307,6 +305,16 @@ def main():
     ricci2_server = create_device(csobj, ricci2_fqdn, flavor_id, image_id,
                                   rhcsnet.id, appnet.id, storagenet.id,
                                   cs_files)
+
+    # Create the ricci3 server
+    ricci3_server = create_device(csobj, ricci2_fqdn, flavor_id, image_id,
+                                      rhcsnet.id, appnet.id, storagenet.id,
+                                      cs_files)
+
+    # Create the luci server
+    luci_server = create_device(csobj, luci_fqdn, flavor_id, image_id,
+                                rhcsnet.id, appnet.id, storagenet.id,
+                                cs_files)
 
     # Call function to wait on ip addresses to be assigned and update
     print "Waiting for server creation to complete"
