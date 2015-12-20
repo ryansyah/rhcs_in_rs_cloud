@@ -362,11 +362,13 @@ def main():
     create_dns(cdnsobj, luci_fqdn, luci_server_updated.accessIPv4)
     create_dns(cdnsobj, ricci1_fqdn, ricci1_server_updated.accessIPv4)
     create_dns(cdnsobj, ricci2_fqdn, ricci2_server_updated.accessIPv4)
+    create_dns(cdnsobj, ricci3_fqdn, ricci3_server_updated.accessIPv4)
 
     # Print the server data
+    print_server_data(ricci1_server_updated, ricci1_server.adminPass)
+    print_server_data(ricci1_server_updated, ricci1_server.adminPass)
+    print_server_data(ricci1_server_updated, ricci1_server.adminPass)
     print_server_data(luci_server_updated, luci_server.adminPass)
-    print_server_data(ricci1_server_updated, ricci1_server.adminPass)
-    print_server_data(ricci1_server_updated, ricci1_server.adminPass)
 
 
 # Called on execution. We are just going to call the main function from here.
