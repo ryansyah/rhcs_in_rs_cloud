@@ -317,18 +317,6 @@ def main():
                                 cs_files)
 
     # Call function to wait on ip addresses to be assigned and update
-    print "Waiting for server creation to complete"
-    luci_server_updated = pyrax.utils.wait_until(luci_server,
-                                                 "status",
-                                                 ["ACTIVE", "ERROR"],
-                                                 attempts=0)
-    if luci_server_updated.status == "ACTIVE":
-        print "Server creation finished"
-    else:
-        print "Server creation errored.  Exiting"
-        return
-
-    # Call function to wait on ip addresses to be assigned and update
     ricci1_server_updated = pyrax.utils.wait_until(ricci1_server,
                                                    "status",
                                                    ["ACTIVE", "ERROR"],
@@ -350,6 +338,35 @@ def main():
         print "Server creation errored.  Exiting"
         return
 
+    # Call function to wait on ip addresses to be assigned and update
+    ricci3_server_updated = pyrax.utils.wait_until(ricci3_server,
+                                                   "status",
+                                                   ["ACTIVE", "ERROR"],
+                                                   attempts=0)
+    if ricci3_server_updated.status == "ACTIVE":
+        print "Server creation finished"
+    else:
+        print "Server creation errored.  Exiting"
+        return
+
+    # Call function to wait on ip addresses to be assigned and update
+    print "Waiting for server creation to complete"
+    luci_server_updated = pyrax.utils.wait_until(luci_server,
+                                                 "status",
+                                                 ["ACTIVE", "ERROR"],
+                                                 attempts=0)
+    if luci_server_updated.status == "ACTIVE":
+        print "Server creation finished"
+    else:
+        print "Server creation errored.  Exiting"
+        return
+
+    # Create a DNS entry for the servers
+    create_dns(cdnsobj, ricci1_fqdn, ricci1_server_updated.accessIPv4)
+    create_dns(cdnsobj, ricci2_fqdn, ricci2_server_updated.accessIPv4)
+    create_dns(cdnsobj, ricci3_fqdn, ricci3_server_updated.accessIPv4)
+    create_dns(cdnsobj, luci_fqdn, luci_server_updated.accessIPv4)
+
     # Create NFS Vol and attach to the luci server
     create_and_attach_cbs(cbsobj, args.nfs_cbl_label,
                           args.nfs_cbl_size, luci_server_updated)
@@ -357,12 +374,6 @@ def main():
     # Create Mysql Vol and attach to the luci server
     create_and_attach_cbs(cbsobj, args.mysql_cbl_label,
                           args.mysql_cbl_size, luci_server_updated)
-
-    # Create a DNS entry for the servers
-    create_dns(cdnsobj, luci_fqdn, luci_server_updated.accessIPv4)
-    create_dns(cdnsobj, ricci1_fqdn, ricci1_server_updated.accessIPv4)
-    create_dns(cdnsobj, ricci2_fqdn, ricci2_server_updated.accessIPv4)
-    create_dns(cdnsobj, ricci3_fqdn, ricci3_server_updated.accessIPv4)
 
     # Print the server data
     print_server_data(ricci1_server_updated, ricci1_server.adminPass)
