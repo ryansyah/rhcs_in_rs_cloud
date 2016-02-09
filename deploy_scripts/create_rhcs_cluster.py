@@ -16,7 +16,7 @@ def create_dns(cdnsobj, fqdn, ip_address):
             print "Found a matching domain: " + domain.name + " for fqdn: " \
                 + fqdn
             recs = [{'type': 'A', 'name': fqdn, 'data': ip_address,
-                    'ttl': 180}]
+                    'ttl': 500}]
 
             # Check if the record already exists and return it instead
             records = domain.list_records()
